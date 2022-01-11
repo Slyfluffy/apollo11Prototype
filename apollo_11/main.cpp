@@ -8,7 +8,7 @@
  * 4. What was the hardest part? Be as specific as possible.
  *      Translating the math into code. Other than that not too bad!
  * 5. How long did it take for you to complete the assignment?
- *      3.0 hours
+ *      3.0 hours™
  *****************************************************************/
 #include <iostream>
 #include <cmath>
