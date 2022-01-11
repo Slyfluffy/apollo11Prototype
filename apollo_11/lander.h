@@ -17,16 +17,16 @@ class Lander
 {
 private:
    float weight;
-   float v_power;
-   float h_power;
+   float vPower;
+   float hPower;
    
 public:
    //Constructors
    Lander();
    
-   float get_weight()  const { return weight;  }
-   float get_v_power() const { return v_power; }
-   float get_h_power() const { return h_power; }
+   float getWeight()  const { return weight;  }
+   float getVPower() const { return vPower; }
+   float getHPower() const { return hPower; }
 };
 
 #endif /* lander_hpp */

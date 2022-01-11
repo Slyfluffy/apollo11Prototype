@@ -13,6 +13,6 @@
  ********************************************/
 Lander :: Lander() {
    this->weight = 15103;
-   this->v_power = 45000;
-   this->h_power = 450;
+   this->vPower = 45000;
+   this->hPower = 450;
 }
