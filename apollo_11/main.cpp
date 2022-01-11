@@ -21,6 +21,7 @@ float get_v_velocity();
 float get_h_velocity();
 float get_altitude();
 
+void run_simulation(float v_velocity, float h_velocity, float altitude);
 float compute_landing_time(float v_velocity, float altitude);
 
 float calculate_velocity(float velocity, float time, bool selector);
@@ -67,20 +68,9 @@ void test_program() {
             cout << "\nArmstrong is awesome!\n";
             break;
       }
-      
-      // Rest of this is copied from Main!
-      float landing_time = compute_landing_time(v_velocity, altitude);
-   
-      if (landing_time == -1)
-         display_nonlanding_message();
-      else {
-         float final_v_velocity = calculate_velocity(v_velocity, landing_time, true);
-         float final_h_velocity = calculate_velocity(h_velocity, landing_time, false);
-         float final_velocity = calculate_final_velocity(final_v_velocity, final_h_velocity);
-
-         display_calculations(landing_time, final_v_velocity, final_h_velocity, final_velocity);
-      }
    }
+      
+   run_simulation(v_velocity, h_velocity, altitude);
 }
 
 /*
@@ -95,6 +85,18 @@ int main(int argc, const char * argv[]) {
    float h_velocity = get_h_velocity();
    float altitude = get_altitude();
 
+   run_simulation(v_velocity, h_velocity, altitude);
+   
+   return 0;
+}
+
+/*
+ * APOLLO 11 :: RUN_SIMULATION
+ * INPUTS    :: v_velocity, h_velocity, altitude
+ * OUTPUTS   :: NONE
+ * Runs the simulation.
+ */
+void run_simulation(float v_velocity, float h_velocity, float altitude) {
    float landing_time = compute_landing_time(v_velocity, altitude);
 
    if (landing_time == -1)
@@ -106,8 +108,6 @@ int main(int argc, const char * argv[]) {
 
       display_calculations(landing_time, final_v_velocity, final_h_velocity, final_velocity);
    }
-   
-   return 0;
 }
 
 /*
@@ -167,7 +167,7 @@ float compute_acceleration(bool selector) {
    Lander apollo_11;
    
    // We could adjust this to change if we were working with another planet/ space object
-   // Maybe through a class next time?11
+   // Maybe through a class next time?
    const float moon_acceleration = -1.625;
    
    if (selector == true) { // Vertical case
