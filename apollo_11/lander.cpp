@@ -7,10 +7,10 @@
 
 #include "lander.h"
 
-/*
+/*********************************************
  * APOLLO 11 :: LANDER :: DEFAULT CONSTRUCTOR
  * Constructs Lander class with default values
- */
+ ********************************************/
 Lander :: Lander() {
    this->weight = 15103;
    this->v_power = 45000;

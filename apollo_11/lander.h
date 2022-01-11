@@ -8,11 +8,11 @@
 #ifndef lander_h
 #define lander_h
 
-/*
+/****************************************************
  * APOLLO 11 :: LANDER
  * Lander class. contains everything required for the
  * lander to function
- */
+ ***************************************************/
 class Lander
 {
 private:

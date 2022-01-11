@@ -31,12 +31,12 @@ float calculate_final_velocity(float v_velocity, float h_velocity);
 void display_calculations(float time, float final_v, float final_h, float final_velocity);
 void display_nonlanding_message();
 
-/*
+/*********************************************
  * APOLLO 11 :: TEST_PROGRAM
  * INPUTS    :: NONE
  * OUTPUTS   :: NONE
  * Tests the program with specific test cases!
- */
+ ********************************************/
 void test_program() {
    float v_velocity = 0.0;
    float h_velocity = 0.0;
@@ -74,12 +74,14 @@ void test_program() {
    cout << endl;
 }
 
-/*
+/************************************************
  * APOLLO 11 :: MAIN
  * INPUTS    :: NONE
  * OUTPUTS   :: NONE
- * Runs the program itself.
- */
+ * Main runs the program. It calls the functions
+ * to get all the necessary variables, then sends
+ * it to run_simulation.
+ ***********************************************/
 int main(int argc, const char * argv[]) {
    test_program();
    float v_velocity = get_v_velocity();
@@ -91,12 +93,12 @@ int main(int argc, const char * argv[]) {
    return 0;
 }
 
-/*
+/***********************************************
  * APOLLO 11 :: RUN_SIMULATION
  * INPUTS    :: v_velocity, h_velocity, altitude
  * OUTPUTS   :: NONE
  * Runs the simulation.
- */
+ **********************************************/
 void run_simulation(float v_velocity, float h_velocity, float altitude) {
    float landing_time = compute_landing_time(v_velocity, altitude);
 
@@ -111,12 +113,12 @@ void run_simulation(float v_velocity, float h_velocity, float altitude) {
    }
 }
 
-/*
+/************************************************
  * APOLLO 11 :: GET_V_VELOCITY
  * INPUTS    :: NONE
  * OUTPUTS   :: v_velocity
  * Retreives the vertical velocity from the user!
- */
+ ***********************************************/
 float get_v_velocity() {
    float v_velocity;
    
@@ -126,12 +128,12 @@ float get_v_velocity() {
    return v_velocity;
 }
 
-/*
+/**************************************************
  * APOLLO 11 :: GET_H_VELOCITY
  * INPUTS    :: NONE
  * OUTPUTS   :: h_velocity
  * Retreives the horizontal velocity from the user!
- */
+ *************************************************/
 float get_h_velocity() {
    float h_velocity;
    
@@ -141,27 +143,29 @@ float get_h_velocity() {
    return h_velocity;
 }
 
-/*
+/**********************************
  * APOLLO 11 :: GET_ALTITUDE
  * INPUTS    :: NONE
  * OUTPUTS   :: altitude
  * Gets the altitude from the user!
- */
+ *********************************/
 float get_altitude() {
-   float altitude;
+   float altitude = -5;
    
-   cout << "What is your altitude (m)? ";
-   cin >> altitude;
+   while (altitude < 0) {
+      cout << "What is your altitude (m)? ";
+      cin >> altitude;
+   }
    
    return altitude;
 }
 
-/*
+/*************************************************
  * APOLLO 11 :: COMPUTE_X_AXIS_ACCELERATION
  * INPUTS    :: NONE
  * OUTPUTS   :: acceleration
- * Sends the x_axis acceleration
- */
+ * Computes the x-axis acceleration and returns it
+ ************************************************/
 float compute_x_axis_acceleration() {
    Lander apollo_11;
 
@@ -169,12 +173,12 @@ float compute_x_axis_acceleration() {
    return lander_acceleration;
 }
 
-/*
- * APOLLO 11 :: COMPUTE_y_AXIS_ACCELERATION
+/*************************************************
+ * APOLLO 11 :: COMPUTE_Y_AXIS_ACCELERATION
  * INPUTS    :: NONE
  * OUTPUTS   :: acceleration
- * Sends the y_axis acceleration.
- */
+ * Computes the y-axis acceleration and returns it
+ ************************************************/
 float compute_y_axis_acceleration() {
    Lander apollo_11;
    
@@ -186,12 +190,12 @@ float compute_y_axis_acceleration() {
    return lander_acceleration + moon_acceleration;
 }
 
-/*
+/*****************************************
  * APOLLO 11 :: COMPUTE_LANDING_TIME
  * INPUTS    :: b (velocity), c (distance)
  * OUTPUTS   :: time
  * Computes the landing time.
- */
+ ****************************************/
 float compute_landing_time(float b, float c) {
    float a = compute_y_axis_acceleration() / 2;
    
@@ -202,42 +206,43 @@ float compute_landing_time(float b, float c) {
       return -1;
 }
 
-/*
+/**********************************************
  * APOLLO 11 :: CALCULATE_V_VELOCITY
  * INPUTS    :: v, t
  * OUTPUTS   :: velocity (vertical)
  * Calculates the vertical velocity at landing.
- */
+ *********************************************/
 float calculate_v_velocity(float v, float t) {
    float a = compute_y_axis_acceleration();
    return v + (a * t);
 }
 
-/*
+/************************************************
  * APOLLO 11 :: CALCULATE_H_VELOCITY
  * INPUTS    :: v, t
  * OUTPUTS   :: velocity (horizonatal)
  * Calculates the horizontal velocity at landing.
- */
+ ***********************************************/
 float calculate_h_velocity(float v, float t) {
    float a = compute_x_axis_acceleration();
    return v + (a * t);
 }
 
-/*
+/*************************************************
  * APOLLO 11 :: CALCULATE_FINAL_VELOCITY
  * INPUTS    :: v, h
  * OUTPUTS   :: final_velocity
- * Calculates the total final velocity at landing. Uses pythagorean theorem.
- */
+ * Calculates the total final velocity at landing. 
+ * Uses pythagorean theorem.
+ ************************************************/
 float calculate_final_velocity(float v, float h) { return sqrt(pow(v, 2) + pow(h, 2)); }
 
-/*
+/***********************************************************************
  * APOLLO 11 :: DISPLAY_CALCULATIONS
  * INPUTS    :: time, final_v_velocity, final_h_velocity, total_velocity
  * OUTPUTS   :: NONE
  * Displays the statistics at landing
- */
+ **********************************************************************/
 void display_calculations(float time, float final_v_velocity, float final_h_velocity,
                            float total_velocity) {
    cout.setf(ios::fixed);
@@ -250,10 +255,10 @@ void display_calculations(float time, float final_v_velocity, float final_h_velo
    cout << "\tTotal velocity:\t\t" << total_velocity << " m/s.\n";
 }
 
-/*
+/*****************************************
  * APOLLO 11 :: DISPLAY_NONLANDING_MESSAGE
  * INPUTS    :: NONE
  * OUTPUTS   :: NONE
  * Displays a message if they won't land.
- */
+ ****************************************/
 void display_nonlanding_message() { cout << "\tYou will not land but rather fly off into space\n"; }
