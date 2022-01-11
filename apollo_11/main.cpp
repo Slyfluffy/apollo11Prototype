@@ -24,7 +24,8 @@ float get_altitude();
 void run_simulation(float v_velocity, float h_velocity, float altitude);
 float compute_landing_time(float v_velocity, float altitude);
 
-float calculate_velocity(float velocity, float time, bool selector);
+float calculate_v_velocity(float velocity, float time);
+float calculate_h_velocity(float velocity, float time);
 float calculate_final_velocity(float v_velocity, float h_velocity);
 
 void display_calculations(float time, float final_v, float final_h, float final_velocity);
@@ -68,9 +69,9 @@ void test_program() {
             cout << "\nArmstrong is awesome!\n";
             break;
       }
+      run_simulation(v_velocity, h_velocity, altitude);
    }
-      
-   run_simulation(v_velocity, h_velocity, altitude);
+   cout << endl;
 }
 
 /*
@@ -102,8 +103,8 @@ void run_simulation(float v_velocity, float h_velocity, float altitude) {
    if (landing_time == -1)
       display_nonlanding_message();
    else {
-      float final_v_velocity = calculate_velocity(v_velocity, landing_time, true);
-      float final_h_velocity = calculate_velocity(h_velocity, landing_time, false);
+      float final_v_velocity = calculate_v_velocity(v_velocity, landing_time);
+      float final_h_velocity = calculate_h_velocity(h_velocity, landing_time);
       float final_velocity = calculate_final_velocity(final_v_velocity, final_h_velocity);
 
       display_calculations(landing_time, final_v_velocity, final_h_velocity, final_velocity);
@@ -156,29 +157,33 @@ float get_altitude() {
 }
 
 /*
- * APOLLO 11 :: COMPUTE_ACCELERATION
- * INPUTS    :: selector
+ * APOLLO 11 :: COMPUTE_X_AXIS_ACCELERATION
+ * INPUTS    :: NONE
  * OUTPUTS   :: acceleration
- * Sends the appropriate acceleration by the selector. If
- * selector is true, then it is vertical. Otherwise compute
- * horizontal acceleration.
+ * Sends the x_axis acceleration
  */
-float compute_acceleration(bool selector) {
+float compute_x_axis_acceleration() {
+   Lander apollo_11;
+
+   const float lander_acceleration = (apollo_11.get_h_power() / apollo_11.get_weight());
+   return lander_acceleration;
+}
+
+/*
+ * APOLLO 11 :: COMPUTE_y_AXIS_ACCELERATION
+ * INPUTS    :: NONE
+ * OUTPUTS   :: acceleration
+ * Sends the y_axis acceleration.
+ */
+float compute_y_axis_acceleration() {
    Lander apollo_11;
    
    // We could adjust this to change if we were working with another planet/ space object
    // Maybe through a class next time?
    const float moon_acceleration = -1.625;
-   
-   if (selector == true) { // Vertical case
-      const float lander_acceleration = (apollo_11.get_v_power() / apollo_11.get_weight());
-      return lander_acceleration + moon_acceleration;
-   }
-   else { // Horizontal
-      const float lander_acceleration = (apollo_11.get_h_power() / apollo_11.get_weight());
-      return lander_acceleration;
-   }
-   
+
+   const float lander_acceleration = (apollo_11.get_v_power() / apollo_11.get_weight());
+   return lander_acceleration + moon_acceleration;
 }
 
 /*
@@ -188,7 +193,7 @@ float compute_acceleration(bool selector) {
  * Computes the landing time.
  */
 float compute_landing_time(float b, float c) {
-   float a = compute_acceleration(true) / 2;
+   float a = compute_y_axis_acceleration() / 2;
    
    float square = pow(b, 2) - (4 * a * c);
    if (square >= 0)
@@ -198,13 +203,24 @@ float compute_landing_time(float b, float c) {
 }
 
 /*
- * APOLLO 11 :: CALCULATE_VELOCITY
- * INPUTS    :: v, t, selector
- * OUTPUTS   :: velocity
- * Calculates the velocity at landing.
+ * APOLLO 11 :: CALCULATE_V_VELOCITY
+ * INPUTS    :: v, t
+ * OUTPUTS   :: velocity (vertical)
+ * Calculates the vertical velocity at landing.
  */
-float calculate_velocity(float v, float t, bool selector) {
-   float a = compute_acceleration(selector);
+float calculate_v_velocity(float v, float t) {
+   float a = compute_y_axis_acceleration();
+   return v + (a * t);
+}
+
+/*
+ * APOLLO 11 :: CALCULATE_H_VELOCITY
+ * INPUTS    :: v, t
+ * OUTPUTS   :: velocity (horizonatal)
+ * Calculates the horizontal velocity at landing.
+ */
+float calculate_h_velocity(float v, float t) {
+   float a = compute_x_axis_acceleration();
    return v + (a * t);
 }
 
