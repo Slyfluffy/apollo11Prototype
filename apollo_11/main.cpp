@@ -20,6 +20,7 @@ using namespace std;
 float get_v_velocity();
 float get_h_velocity();
 float get_altitude();
+float get_initial_angle();
 
 void run_simulation(float v_velocity, float h_velocity, float altitude);
 float compute_landing_time(float v_velocity, float altitude);
@@ -31,48 +32,48 @@ float calculate_final_velocity(float v_velocity, float h_velocity);
 void display_calculations(float time, float final_v, float final_h, float final_velocity);
 void display_nonlanding_message();
 
-/*********************************************
- * APOLLO 11 :: TEST_PROGRAM
- * INPUTS    :: NONE
- * OUTPUTS   :: NONE
- * Tests the program with specific test cases!
- ********************************************/
-void test_program() {
-   float v_velocity = 0.0;
-   float h_velocity = 0.0;
-   float altitude = 0.0;
-   
-   for (int i = 0; i <= 3; i++) {
-      switch (i) {
-         case 0: // Test case 1
-            v_velocity = 0;
-            h_velocity = 0;
-            altitude = 10;
-            cout << "Zero Velocity:\n";
-            break;
-         case 1: // Test case 2
-            v_velocity = -9.07;
-            h_velocity = -.26;
-            altitude = 30;
-            cout << "\nSoft Landing:\n";
-            break;
-         case 2: // Test case 3
-            v_velocity = -20;
-            h_velocity = -5;
-            altitude = 50;
-            cout << "\nHard landing:\n";
-            break;
-         case 3: // Test case 4
-            v_velocity = -16.4593;
-            h_velocity = -.36;
-            altitude = 100;
-            cout << "\nArmstrong is awesome!\n";
-            break;
-      }
-      run_simulation(v_velocity, h_velocity, altitude);
-   }
-   cout << endl;
-}
+///*********************************************
+// * APOLLO 11 :: TEST_PROGRAM
+// * INPUTS    :: NONE
+// * OUTPUTS   :: NONE
+// * Tests the program with specific test cases!
+// ********************************************/
+//void test_program() {
+//   float v_velocity = 0.0;
+//   float h_velocity = 0.0;
+//   float altitude = 0.0;
+//
+//   for (int i = 0; i <= 3; i++) {
+//      switch (i) {
+//         case 0: // Test case 1
+//            v_velocity = 0;
+//            h_velocity = 0;
+//            altitude = 10;
+//            cout << "Zero Velocity:\n";
+//            break;
+//         case 1: // Test case 2
+//            v_velocity = -9.07;
+//            h_velocity = -.26;
+//            altitude = 30;
+//            cout << "\nSoft Landing:\n";
+//            break;
+//         case 2: // Test case 3
+//            v_velocity = -20;
+//            h_velocity = -5;
+//            altitude = 50;
+//            cout << "\nHard landing:\n";
+//            break;
+//         case 3: // Test case 4
+//            v_velocity = -16.4593;
+//            h_velocity = -.36;
+//            altitude = 100;
+//            cout << "\nArmstrong is awesome!\n";
+//            break;
+//      }
+//      run_simulation(v_velocity, h_velocity, altitude);
+//   }
+//   cout << endl;
+//}
 
 /************************************************
  * APOLLO 11 :: MAIN
@@ -83,7 +84,7 @@ void test_program() {
  * it to run_simulation.
  ***********************************************/
 int main(int argc, const char * argv[]) {
-   test_program();
+//   test_program();
    float v_velocity = get_v_velocity();
    float h_velocity = get_h_velocity();
    float altitude = get_altitude();
@@ -158,6 +159,21 @@ float get_altitude() {
    }
    
    return altitude;
+}
+
+/**********************************
+ * APOLLO 11 :: GET_INITIAL_ANGLE
+ * INPUTS    :: NONE
+ * OUTPUTS   :: angle
+ * Gets the intial angle for the LM
+ *********************************/
+float get_initial_angle() {
+   float angle;
+   
+   cout << "What is the angle of the LM where 0 is up (degrees)? ";
+   cin >> angle;
+   
+   return angle;
 }
 
 /*************************************************
