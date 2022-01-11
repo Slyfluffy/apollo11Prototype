@@ -215,7 +215,7 @@ float computeYAxisAcceleration() {
 float computeLandingTime(float b, float c) {
    float a = computeYAxisAcceleration() / 2;
    
-   float square = pow(b, 2) - (4 * a * c);
+   float square = (b * b) - (4 * a * c);
    if (square >= 0)
       return (-b + sqrt(square)) / (2 * a);
    else
@@ -251,7 +251,7 @@ float calculateHVelocity(float v, float t) {
  * Calculates the total final velocity at landing. 
  * Uses pythagorean theorem.
  ************************************************/
-float calculateFinalVelocity(float v, float h) { return sqrt(pow(v, 2) + pow(h, 2)); }
+float calculateFinalVelocity(float v, float h) { return sqrt((v * v) + (h * h)); }
 
 /***********************************************************************
  * APOLLO 11 :: DISPLAYCALCULATIONS
