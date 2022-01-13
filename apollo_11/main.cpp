@@ -11,6 +11,7 @@
  *      3.0 hours™
  *****************************************************************/
 #include <iostream>
+#include <iomanip>
 #include <cmath>
 #include "lander.h"
 
@@ -40,6 +41,8 @@ float convertToRadians(float degree);
 // Display functions
 void displayCalculations(float time, float finalV, float finalH, float finalVelocity);
 void displayNonlandingMessage();
+void displayFiveSecondMessage();
+void displaySecondData(int second, float x, float y, float dx, float dy, float speed, float angle);
 
 ///*********************************************
 // * APOLLO 11 :: TESTPROGRAM
@@ -317,3 +320,25 @@ void displayCalculations(float time, float finalVVelocity, float finalHVelocity,
  * Displays a message if they won't land.
  ****************************************/
 void displayNonlandingMessage() { cout << "\tYou will not land but rather fly off into space\n"; }
+
+/**********************************************
+ * APOLLO 11 :: DISPLAYNFIVESECONDMESSAGE
+ * INPUTS    :: NONE
+ * OUTPUTS   :: NONE
+ * Displays the header for the five second data
+ *********************************************/
+void displayFiveSecondMessage() {
+   cout << "For the next 5 seconds with the main engine on, the position of the lander is:\n\n";
+}
+
+/*************************************************
+ * APOLLO 11 :: DISPLAYNONLANDINGMESSAGE
+ * INPUTS    :: second, x, y, dx, dy, speed, angle
+ * OUTPUTS   :: NONE
+ * Displays the data for one second.
+ ************************************************/
+void displaySecondData(int second, float x, float y, float dx, float dy, float speed, float angle) {
+   cout << setw(2) << second << "s - x,y: (" << x << ", " << y << ")m"
+        << " dx,dy: (" << dx << ", " << dy << ")m/s" << " speed: "
+        << speed << "m/s angle: " << angle << "deg\n";
+}
