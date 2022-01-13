@@ -23,6 +23,7 @@ float getVVelocity();
 float getHVelocity();
 float getAltitude();
 float getInitialAngle();
+float getNewAngle();
 
 // Functions that run
 void runSimulation(float vVelocity, float hVelocity, float altitude);
@@ -183,6 +184,21 @@ float getInitialAngle() {
    float angle;
    
    cout << "What is the angle of the LM where 0 is up (degrees)? ";
+   cin >> angle;
+   
+   return angle;
+}
+
+/*******************************
+ * APOLLO 11 :: GETNEWANGLE
+ * INPUTS    :: NONE
+ * OUTPUTS   :: angle
+ * Gets the new angle for the LM
+ ******************************/
+float getNewAngle() {
+   float angle;
+   
+   cout << "What is the new angle of the LM where 0 is up (degrees)? ";
    cin >> angle;
    
    return angle;
