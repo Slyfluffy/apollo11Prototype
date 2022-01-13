@@ -323,10 +323,10 @@ void displayCalculations(float time, float finalVVelocity, float finalHVelocity,
    cout.setf(ios::showpoint);
    cout.precision(2);
    
-   cout << "\tTime to landing:\t\t" << time << " seconds.\n";
-   cout << "\tVertical velocity:\t" << finalVVelocity << " m/s.\n";
-   cout << "\tHorizontal velocity:\t" << finalHVelocity << " m/s.\n";
-   cout << "\tTotal velocity:\t\t" << totalVelocity << " m/s.\n";
+   cout << "\tTime to landing:\t\t" << time << " seconds.\n"
+        << "\tVertical velocity:\t" << finalVVelocity << " m/s.\n"
+        << "\tHorizontal velocity:\t" << finalHVelocity << " m/s.\n"
+        << "\tTotal velocity:\t\t" << totalVelocity << " m/s.\n";
 }
 
 /*****************************************
@@ -354,6 +354,10 @@ void displayFiveSecondMessage() {
  * Displays the data for one second.
  ************************************************/
 void displaySecondData(int second, float x, float y, float dx, float dy, float speed, float angle) {
+   cout.setf(ios::fixed);
+   cout.setf(ios::showpoint);
+   cout.precision(2);
+   
    cout << setw(2) << second << "s - x,y: (" << x << ", " << y << ")m"
         << " dx,dy: (" << dx << ", " << dy << ")m/s" << " speed: "
         << speed << "m/s angle: " << angle << "deg\n";
