@@ -16,19 +16,28 @@
 
 using namespace std;
 
-//prototypes
+// Prototypes
+// Get functions
 float getVVelocity();
 float getHVelocity();
 float getAltitude();
 float getInitialAngle();
 
+// Functions that run
 void runSimulation(float vVelocity, float hVelocity, float altitude);
-float computeLandingTime(float vVelocity, float altitude);
 
+// Computation and calculate functions
+float computeLandingTime(float vVelocity, float altitude);
 float calculateVVelocity(float velocity, float time);
 float calculateHVelocity(float velocity, float time);
 float calculateFinalVelocity(float vVelocity, float hVelocity);
+float calculateVerticalThrust(float thrust, float angle);
+float calculateHThrust(float thrust, float angle);
 
+// Conversion functions
+float convertToRadians(float degree);
+
+// Display functions
 void displayCalculations(float time, float finalV, float finalH, float finalVelocity);
 void displayNonlandingMessage();
 
@@ -206,12 +215,13 @@ float computeYAxisAcceleration() {
    return landerAcceleration + moonAcceleration;
 }
 
-/*****************************************
+/************************************************
  * APOLLO 11 :: COMPUTELANDINGTIME
  * INPUTS    :: b (velocity), c (distance)
  * OUTPUTS   :: time
+ * EQUATION  :: t = (-b + sqrt(square)) / (2 * a)
  * Computes the landing time.
- ****************************************/
+ ***********************************************/
 float computeLandingTime(float b, float c) {
    float a = computeYAxisAcceleration() / 2;
    
@@ -226,6 +236,7 @@ float computeLandingTime(float b, float c) {
  * APOLLO 11 :: CALCULATEVVELOCITY
  * INPUTS    :: v, t
  * OUTPUTS   :: velocity (vertical)
+ * EQUATION  :: vFinal = vInitial + (a * t)
  * Calculates the vertical velocity at landing.
  *********************************************/
 float calculateVVelocity(float v, float t) {
@@ -237,6 +248,7 @@ float calculateVVelocity(float v, float t) {
  * APOLLO 11 :: CALCULATEHVELOCITY
  * INPUTS    :: v, t
  * OUTPUTS   :: velocity (horizonatal)
+ * EQUATION  :: vFinal = vInitial + (a * t)
  * Calculates the horizontal velocity at landing.
  ***********************************************/
 float calculateHVelocity(float v, float t) {
@@ -248,10 +260,37 @@ float calculateHVelocity(float v, float t) {
  * APOLLO 11 :: CALCULATEFINALVELOCITY
  * INPUTS    :: v, h
  * OUTPUTS   :: finalVelocity
+ * EQUATION  :: c^2 = a^2 + b^2
  * Calculates the total final velocity at landing. 
- * Uses pythagorean theorem.
  ************************************************/
 float calculateFinalVelocity(float v, float h) { return sqrt((v * v) + (h * h)); }
+
+/**********************************
+ * APOLLO 11 :: CALCULATEVTHRUST
+ * INPUTS    :: thrust, angle
+ * OUTPUTS   :: hThrust
+ * EQUATION  :: dy = t * cos(angle)
+ * Calculates Vertical thrust
+ *********************************/
+float calculateVerticalThrust(float thrust, float angle) { return thrust * cos(angle); }
+
+/**********************************
+ * APOLLO 11 :: CALCULATEHTHRUST
+ * INPUTS    :: thrust, angle
+ * OUTPUTS   :: hThrust
+ * EQUATION  :: dx = t * sin(angle)
+ * Calculates horizontal thrust
+ *********************************/
+float calculateHThrust(float thrust, float angle) { return thrust * sin(angle); }
+
+/***********************************
+ * APOLLO 11 :: CONVERTTORADIANS
+ * INPUTS    :: degree
+ * OUTPUTS   :: radian
+ * EQUATION  :: r = 2 * PI * d / 360
+ * Converts the degree to a radian
+ **********************************/
+float convertToRadians(float degree) { return (2 * M_PI * degree / 360); }
 
 /***********************************************************************
  * APOLLO 11 :: DISPLAYCALCULATIONS
