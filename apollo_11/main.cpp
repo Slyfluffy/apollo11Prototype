@@ -13,6 +13,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+
 #include "lander.h"
 #include "point.h"
 
@@ -43,8 +44,8 @@ float calculateVThrust(float thrust, float angle);
 float calculateHThrust(float thrust, float angle);
 
 // Position
-Lander calculateXPosition(Lander l);
-Lander calculateYPosition(Lander l);
+float calculateXPosition(Lander l);
+float calculateYPosition(Lander l);
 
 // Conversion functions
 float convertToRadians(float degree);
@@ -137,14 +138,16 @@ void runSimulation(Lander lander, float angle) {
          float dy = calculateVVelocity(lander.getVelocity().getDy(), second, angle);
          lander.setVelocity(dx, dy);
          
-         lander = calculateXPosition(lander);
-         lander = calculateYPosition(lander);
+         float x = calculateXPosition(lander);
+         float y = calculateYPosition(lander);
+         lander.setPoint(x, y);
          
          displaySecondData(second, lander, angle);
          second++;
       }
       interval++;
-      angle = getNewAngle();
+      if (interval < 3)
+         angle = getNewAngle();
    }
 }
 
@@ -219,7 +222,7 @@ float getInitialAngle() {
 float getNewAngle() {
    float angle;
    
-   cout << "What is the new angle of the LM where 0 is up (degrees)? ";
+   cout << "\nWhat is the new angle of the LM where 0 is up (degrees)? ";
    cin >> angle;
    
    return angle;
@@ -233,7 +236,7 @@ float getNewAngle() {
  ************************************************/
 float computeXAxisAcceleration(float angle) {
    Lander apollo11;
-   const float a = apollo11.getVPower() / apollo11.getWeight();
+   float a = apollo11.getTPower() / apollo11.getWeight();
 
    const float landerAcceleration = calculateHThrust(a, angle);
    return landerAcceleration;
@@ -251,7 +254,7 @@ float computeYAxisAcceleration(float angle) {
    // We could adjust this to change if we were working with another planet/ space object
    // Maybe through a class next time?
    const float moonAcceleration = -1.625;
-   const float a = apollo11.getVPower() / apollo11.getWeight();
+   float a = apollo11.getTPower() / apollo11.getWeight();
 
    const float landerAcceleration = calculateVThrust(a, angle);
    return landerAcceleration + moonAcceleration;
@@ -282,7 +285,9 @@ float computeYAxisAcceleration(float angle) {
  * Calculates the vertical velocity at landing.
  *********************************************/
 float calculateVVelocity(float v, float t, float angle) {
-   float a = computeYAxisAcceleration(angle);
+   // 0 is originally to the right rather than up
+   float r = convertToRadians(angle);
+   float a = computeYAxisAcceleration(r);
    return v + (a * t);
 }
 
@@ -294,7 +299,8 @@ float calculateVVelocity(float v, float t, float angle) {
  * Calculates the horizontal velocity at landing.
  ***********************************************/
 float calculateHVelocity(float v, float t, float angle) {
-   float a = computeXAxisAcceleration(angle);
+   float r = convertToRadians(angle);
+   float a = computeXAxisAcceleration(r);
    return v + (a * t);
 }
 
@@ -305,7 +311,7 @@ float calculateHVelocity(float v, float t, float angle) {
  * EQUATION  :: c^2 = a^2 + b^2
  * Calculates the total final velocity at landing. 
  ************************************************/
-float calculateFinalVelocity(float v, float h) { return sqrt((v * v) + (h * h)); }
+//float calculateFinalVelocity(float v, float h) { return sqrt((v * v) + (h * h)); }
 
 /**********************************
  * APOLLO 11 :: CALCULATEVTHRUST
@@ -314,7 +320,7 @@ float calculateFinalVelocity(float v, float h) { return sqrt((v * v) + (h * h));
  * EQUATION  :: dy = t * cos(angle)
  * Calculates Vertical thrust
  *********************************/
-float calculateVThrust(float thrust, float angle) { return thrust * cos(angle + M_PI/2); }
+float calculateVThrust(float thrust, float angle) { return thrust * cos(angle); }
 
 /**********************************
  * APOLLO 11 :: CALCULATEHTHRUST
@@ -323,7 +329,7 @@ float calculateVThrust(float thrust, float angle) { return thrust * cos(angle + 
  * EQUATION  :: dx = t * sin(angle)
  * Calculates horizontal thrust
  *********************************/
-float calculateHThrust(float thrust, float angle) { return thrust * sin(angle + M_PI/2); }
+float calculateHThrust(float thrust, float angle) { return thrust * sin(angle); }
 
 /***********************************
  * APOLLO 11 :: CONVERTTORADIANS
@@ -332,7 +338,7 @@ float calculateHThrust(float thrust, float angle) { return thrust * sin(angle + 
  * EQUATION  :: r = 2 * PI * d / 360
  * Converts the degree to a radian
  **********************************/
-float convertToRadians(float degree) { return (2 * M_PI * degree / 360); }
+float convertToRadians(float degree) { return (2 * M_PI * (degree / 360)); }
 
 /***********************************
  * APOLLO 11 :: CALCULATEXPOSITION
@@ -341,12 +347,11 @@ float convertToRadians(float degree) { return (2 * M_PI * degree / 360); }
  * Calculates the new position 
  * according to velocity
  **********************************/
-Lander calculateXPosition(Lander lander) {
+float calculateXPosition(Lander lander) {
    float xPosition = lander.getPoint().getX();
    xPosition += lander.getVelocity().getDx();
-   lander.getPoint().setX(xPosition);
    
-   return lander;
+   return xPosition;
 }
 
 /***********************************
@@ -356,12 +361,11 @@ Lander calculateXPosition(Lander lander) {
  * Calculates the new position 
  * according to velocity
  **********************************/
-Lander calculateYPosition(Lander lander) {
+float calculateYPosition(Lander lander) {
    float yPosition = lander.getPoint().getY();
    yPosition += lander.getVelocity().getDy();
-   lander.getPoint().setY(yPosition);
    
-   return lander;
+   return yPosition;
 }
 
 /***********************************************************************
