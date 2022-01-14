@@ -101,8 +101,13 @@ int main(int argc, const char * argv[]) {
    float vVelocity = getVVelocity();
    float hVelocity = getHVelocity();
    float altitude = getAltitude();
+   float angle = getInitialAngle();
 
-   runSimulation(vVelocity, hVelocity, altitude);
+   int second = 0;
+
+   lander = Lander(angle, vVelocity, hVelocity, altitude);
+
+   // runSimulation(vVelocity, hVelocity, altitude);
    
    return 0;
 }
@@ -353,12 +358,12 @@ void displayFiveSecondMessage() {
  * OUTPUTS   :: NONE
  * Displays the data for one second.
  ************************************************/
-void displaySecondData(int second, float x, float y, float dx, float dy, float speed, float angle) {
+void displaySecondData(int second, Lander lander) {
    cout.setf(ios::fixed);
    cout.setf(ios::showpoint);
    cout.precision(2);
    
-   cout << setw(2) << second << "s - x,y: (" << x << ", " << y << ")m"
-        << " dx,dy: (" << dx << ", " << dy << ")m/s" << " speed: "
-        << speed << "m/s angle: " << angle << "deg\n";
+   cout << setw(2) << second << "s - x,y: (" << lander.getXPosition() << ", " << lander.getYPosition() << ")m"
+        << " dx,dy: (" << lander.getHVelocity() << ", " << lander.getVVelocity() << ")m/s" << " speed: "
+        << lander.getSpeed() << "m/s angle: " << lander.getAngle() << "deg\n";
 }
