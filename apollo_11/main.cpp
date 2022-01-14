@@ -115,7 +115,7 @@ int main(int argc, const char * argv[]) {
 
    Lander lander = Lander(vVelocity, hVelocity, altitude);
 
-    runSimulation(lander, angle);
+   runSimulation(lander, angle);
    
    return 0;
 }
@@ -127,23 +127,23 @@ int main(int argc, const char * argv[]) {
  * Runs the simulation.
  **********************************************/
 void runSimulation(Lander lander, float angle) {
-   bool done = false;
-   while (!done) {
+   int second = 1;
+   int interval = 1;
+   
+   while (interval <= 2) {
       displayFiveSecondMessage();
-      for (int i = 1; i < 6; i++) {
-         float dx = calculateHVelocity(lander.getVelocity().getDx(), i, angle);
-         float dy = calculateVVelocity(lander.getVelocity().getDy(), i, angle);
-         
-         cout << lander.getVelocity().getDx() << endl;
-         lander.getVelocity().setDx(dx);
-         cout << dx << endl;
-         lander.getVelocity().setDy(dy);
+      for (int count = 1; count < 6; count++) {
+         float dx = calculateHVelocity(lander.getVelocity().getDx(), second, angle);
+         float dy = calculateVVelocity(lander.getVelocity().getDy(), second, angle);
+         lander.setVelocity(dx, dy);
          
          lander = calculateXPosition(lander);
          lander = calculateYPosition(lander);
          
-         displaySecondData(i, lander, angle);
+         displaySecondData(second, lander, angle);
+         second++;
       }
+      interval++;
       angle = getNewAngle();
    }
 }
@@ -397,7 +397,7 @@ void displayNonlandingMessage() { cout << "\tYou will not land but rather fly of
  * Displays the header for the five second data
  *********************************************/
 void displayFiveSecondMessage() {
-   cout << "For the next 5 seconds with the main engine on, the position of the lander is:\n\n";
+   cout << "\nFor the next 5 seconds with the main engine on, the position of the lander is:\n\n";
 }
 
 /*************************************************

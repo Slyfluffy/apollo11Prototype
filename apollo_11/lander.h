@@ -39,7 +39,10 @@ public:
    float getHPower()  const { return hPower; }
    
    Point getPoint()       const { return p; }
-   Velocity getVelocity() const { std::cout << "getVelocity: " << v.getDy() << std::endl; return v; }
+   Velocity getVelocity() const { return v; }
+   
+   // Setters
+   void setVelocity(float dx, float dy) { v.setDx(dx); v.setDy(dy); }
 };
 
 #endif /* lander_hpp */

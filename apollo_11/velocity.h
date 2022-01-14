@@ -8,7 +8,6 @@
 #ifndef velocity_h
 #define velocity_h
 #include <cmath>
-#include <iostream>
 
 class Velocity {
 private:
@@ -23,7 +22,7 @@ public:
    float getDx() const { return dx; }
    float getDy() const { return dy; }
    void setDx(float dx) { this->dx = dx; }
-   void setDy(float dy) { this->dy = dy; std::cout << "setDy: " << dy << std::endl; }
+   void setDy(float dy) { this->dy = dy; }
    
    float getSpeed() const { return sqrt((dx * dx) + (dy * dy)); }
 };
