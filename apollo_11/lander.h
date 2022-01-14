@@ -8,6 +8,9 @@
 #ifndef lander_h
 #define lander_h
 
+#include "point.h"
+#include "velocity.h"
+
 /****************************************************
  * APOLLO 11 :: LANDER
  * Lander class. contains everything required for the
@@ -16,47 +19,27 @@
 class Lander
 {
 private:
+   //Part of the lander
    float weight;
    float vPower;
    float hPower;
-   float xPosition;
-   float yPosition;
-   float vVelocity;
-   float hVelocity;
-   float vAcceleration;
-   float hAcceleration;
-   float speed;
-   float angle;
    
+   //Has-a
+   Point p;
+   Velocity v;
    
 public:
    //Constructors
    Lander();
-   Lander(float angle, float vVelocity, float hVelocity; float yPosition);
+   Lander(float vVelocity, float hVelocity, float yPosition);
    
    // Getters
-   float getWeight()  const { return weight;  }
-   float getVPower() const { return vPower; }
-   float getHPower() const { return hPower; }
-   float getAngle() const { return angle; }
-   float getVVelocity() const { return vVelocity; }
-   float getHVelocity() const { return hVelocity; }
-   float getSpeed() const { return speed; }
-   float getXPosition() const { return xPosition; }
-   float getYPosition() const { return yPosition; }
-   float getvAcceleration() const { return vAcceleration; }
-   float gethAccelreation() const { return hAcceleration; }
-
-   // Setters
-   void setAngle(float angle) { this->angle = angle; }
-   void setVVelocity(float vVelocity) { this->vVelocity = vVelocity; }
-   void setHVelocity(float hVelocity) { this->setHVelocity = hVelocity; }
-   void setSpeed(float speed) { this->speed = speed; }
-   void setXPosition(float xPosition) { this->xPosition = xPosition; }
-   void setYPosition(float yPosition) { this->yPosition - yPosition; }
-   void setvAcceleration(float vAcceleration) { this->vAcceleration = vAcceleration; }
-   void sethAcceleration(float hAcceleration) { this->hAcceleration = hAcceleration; }
+   float getWeight()  const { return weight; }
+   float getVPower()  const { return vPower; }
+   float getHPower()  const { return hPower; }
    
+   Point getPoint()       const { return p; }
+   Velocity getVelocity() const { std::cout << "getVelocity: " << v.getDy() << std::endl; return v; }
 };
 
 #endif /* lander_hpp */

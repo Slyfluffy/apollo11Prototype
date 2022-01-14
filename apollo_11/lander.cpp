@@ -6,6 +6,7 @@
 //
 
 #include "lander.h"
+#include <iostream>
 
 /*********************************************
  * APOLLO 11 :: LANDER :: DEFAULT CONSTRUCTOR
@@ -15,29 +16,22 @@ Lander :: Lander() {
    this->weight = 15103;
    this->vPower = 45000;
    this->hPower = 450;
-   this->speed = 0;
-   this->xPosition = 0;
-
-   this->angle = 0;
-   this->vVelocity = 0;
-   this->hVelocity = 0;
-   this->yPosition = 100;
-   this->vAcceleration = 2.9795;
-   this->hAcceleration = .029795;
+   
+   p.setX(0);
+   p.setY(100);
+   
+   v.setDx(0);
+   v.setDy(0);
 }
 
-Lander::Lander(float angle, float vVelocity, float hVelocity; float yPosition) {
+Lander :: Lander(float vVelocity, float hVelocity, float yPosition) {
 	this->weight = 15103;
 	this->vPower = 45000;
 	this->hPower = 450;
-	this->speed = 0;
-	this->xPosition = 0;
-
-	this->vAcceleration = 2.9795;
-	this->hAcceleration = .029795;
-
-	this->angle = angle;
-	this->vVelocity = vVelocity;
-	this->hVelocity = hVelocity;
-	this->yPosition = yPosition;
+   
+   v.setDx(hVelocity);
+   v.setDy(vVelocity);
+   
+   p.setX(0);
+   p.setY(yPosition);
 }

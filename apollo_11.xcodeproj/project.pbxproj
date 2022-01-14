@@ -28,6 +28,8 @@
 		CE744D1D2784C36D0073F216 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		CE744D242784C4540073F216 /* lander.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = lander.cpp; sourceTree = "<group>"; };
 		CE744D2B2784D13C0073F216 /* lander.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = lander.h; sourceTree = "<group>"; };
+		CE918AB12791237C00541FC8 /* point.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = point.h; sourceTree = "<group>"; };
+		CE918AB22791247500541FC8 /* velocity.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = velocity.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +65,8 @@
 				CE744D1D2784C36D0073F216 /* main.cpp */,
 				CE744D2B2784D13C0073F216 /* lander.h */,
 				CE744D242784C4540073F216 /* lander.cpp */,
+				CE918AB12791237C00541FC8 /* point.h */,
+				CE918AB22791247500541FC8 /* velocity.h */,
 			);
 			path = apollo_11;
 			sourceTree = "<group>";
