@@ -35,8 +35,8 @@ void runSimulation(Lander lander, float angle);
 float computeLandingTime(float vVelocity, float altitude);
 
 // Velocity
-float calculateVVelocity(float velocity, float time, float angle);
-float calculateHVelocity(float velocity, float time, float angle);
+float calculateVVelocity(float velocity, float angle);
+float calculateHVelocity(float velocity, float angle);
 float calculateFinalVelocity(float vVelocity, float hVelocity);
 
 // Thrust
@@ -63,40 +63,6 @@ void displaySecondData(int second, Lander lander, float angle);
 // * Tests the program with specific test cases!
 // ********************************************/
 //void testProgram() {
-//   float v_velocity = 0.0;
-//   float h_velocity = 0.0;
-//   float altitude = 0.0;
-//
-//   for (int i = 0; i <= 3; i++) {
-//      switch (i) {
-//         case 0: // Test case 1
-//            v_velocity = 0;
-//            h_velocity = 0;
-//            altitude = 10;
-//            cout << "Zero Velocity:\n";
-//            break;
-//         case 1: // Test case 2
-//            v_velocity = -9.07;
-//            h_velocity = -.26;
-//            altitude = 30;
-//            cout << "\nSoft Landing:\n";
-//            break;
-//         case 2: // Test case 3
-//            v_velocity = -20;
-//            h_velocity = -5;
-//            altitude = 50;
-//            cout << "\nHard landing:\n";
-//            break;
-//         case 3: // Test case 4
-//            v_velocity = -16.4593;
-//            h_velocity = -.36;
-//            altitude = 100;
-//            cout << "\nArmstrong is awesome!\n";
-//            break;
-//      }
-//      run_simulation(v_velocity, h_velocity, altitude);
-//   }
-//   cout << endl;
 //}
 
 /************************************************
@@ -134,8 +100,8 @@ void runSimulation(Lander lander, float angle) {
    while (interval <= 2) {
       displayFiveSecondMessage();
       for (int count = 1; count < 6; count++) {
-         float dx = calculateHVelocity(lander.getVelocity().getDx(), second, angle);
-         float dy = calculateVVelocity(lander.getVelocity().getDy(), second, angle);
+         float dx = calculateHVelocity(lander.getVelocity().getDx(), angle);
+         float dy = calculateVVelocity(lander.getVelocity().getDy(), angle);
          lander.setVelocity(dx, dy);
          
          float x = calculateXPosition(lander);
@@ -145,9 +111,9 @@ void runSimulation(Lander lander, float angle) {
          displaySecondData(second, lander, angle);
          second++;
       }
-      interval++;
-      if (interval < 3)
+      if (interval < 2)
          angle = getNewAngle();
+      interval++;
    }
 }
 
@@ -284,11 +250,11 @@ float computeYAxisAcceleration(float angle) {
  * EQUATION  :: vFinal = vInitial + (a * t)
  * Calculates the vertical velocity at landing.
  *********************************************/
-float calculateVVelocity(float v, float t, float angle) {
+float calculateVVelocity(float v, float angle) {
    // 0 is originally to the right rather than up
    float r = convertToRadians(angle);
    float a = computeYAxisAcceleration(r);
-   return v + (a * t);
+   return v + a;
 }
 
 /************************************************
@@ -298,10 +264,10 @@ float calculateVVelocity(float v, float t, float angle) {
  * EQUATION  :: vFinal = vInitial + (a * t)
  * Calculates the horizontal velocity at landing.
  ***********************************************/
-float calculateHVelocity(float v, float t, float angle) {
+float calculateHVelocity(float v, float angle) {
    float r = convertToRadians(angle);
    float a = computeXAxisAcceleration(r);
-   return v + (a * t);
+   return v + a;
 }
 
 /*************************************************
