@@ -30,13 +30,19 @@ float getNewAngle();
 void runSimulation(Lander lander, float angle);
 
 // Computation and calculate functions
+// Time
 float computeLandingTime(float vVelocity, float altitude);
+
+// Velocity
 float calculateVVelocity(float velocity, float time, float angle);
 float calculateHVelocity(float velocity, float time, float angle);
 float calculateFinalVelocity(float vVelocity, float hVelocity);
+
+// Thrust
 float calculateVThrust(float thrust, float angle);
 float calculateHThrust(float thrust, float angle);
 
+// Position
 Lander calculateXPosition(Lander l);
 Lander calculateYPosition(Lander l);
 
@@ -328,6 +334,13 @@ float calculateHThrust(float thrust, float angle) { return thrust * sin(angle + 
  **********************************/
 float convertToRadians(float degree) { return (2 * M_PI * degree / 360); }
 
+/***********************************
+ * APOLLO 11 :: CALCULATEXPOSITION
+ * INPUTS    :: lander
+ * OUTPUTS   :: lander
+ * Calculates the new position 
+ * according to velocity
+ **********************************/
 Lander calculateXPosition(Lander lander) {
    float xPosition = lander.getPoint().getX();
    xPosition += lander.getVelocity().getDx();
@@ -336,6 +349,13 @@ Lander calculateXPosition(Lander lander) {
    return lander;
 }
 
+/***********************************
+ * APOLLO 11 :: CALCULATEYPOSITION
+ * INPUTS    :: lander
+ * OUTPUTS   :: lander
+ * Calculates the new position 
+ * according to velocity
+ **********************************/
 Lander calculateYPosition(Lander lander) {
    float yPosition = lander.getPoint().getY();
    yPosition += lander.getVelocity().getDy();
