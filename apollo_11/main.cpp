@@ -44,8 +44,8 @@ float calculateVThrust(float thrust, float angle);
 float calculateHThrust(float thrust, float angle);
 
 // Position
-float calculateXPosition(Lander l);
-float calculateYPosition(Lander l);
+float calculateXPosition(Lander l, float a);
+float calculateYPosition(Lander l, float a);
 
 // Conversion functions
 float convertToRadians(float degree);
@@ -56,14 +56,37 @@ void displayNonlandingMessage();
 void displayFiveSecondMessage();
 void displaySecondData(int second, Lander lander, float angle);
 
-///*********************************************
-// * APOLLO 11 :: TESTPROGRAM
-// * INPUTS    :: NONE
-// * OUTPUTS   :: NONE
-// * Tests the program with specific test cases!
-// ********************************************/
-//void testProgram() {
-//}
+/*********************************************
+ * APOLLO 11 :: TESTPROGRAM
+ * INPUTS    :: NONE
+ * OUTPUTS   :: NONE
+ * Tests the program with specific test cases!
+ ********************************************/
+void testProgram() {
+   Lander lander;
+   
+   for (int i = 1; i <= 3; i++)
+      switch (i) {
+         case 1:
+            cout << "\nTest Case: Hard landing\n";
+            lander.setVelocity(10.53, -13.959);
+            lander.setPoint(0, 100);
+            runSimulation(lander, -45);
+            break;
+         case 2:
+            cout << "\nTest Case: Crash\n";
+            lander.setVelocity(-35.00, -15.00);
+            lander.setPoint(0, 207.77);
+            runSimulation(lander, 90);
+            break;
+         case 3:
+            cout << "\nTest Case: Armstrong is awesome!\n";
+            lander.setVelocity(10.53, -13.959);
+            lander.setPoint(0, 56.11);
+            runSimulation(lander, -42.185);
+            break;
+      }
+}
 
 /************************************************
  * APOLLO 11 :: MAIN
@@ -74,7 +97,9 @@ void displaySecondData(int second, Lander lander, float angle);
  * it to run_simulation.
  ***********************************************/
 int main(int argc, const char * argv[]) {
-//   test_program();
+   testProgram();
+   
+   // Get all the data needed to create lander and run the simulation
    float vVelocity = getVVelocity();
    float hVelocity = getHVelocity();
    float altitude = getAltitude();
@@ -82,7 +107,7 @@ int main(int argc, const char * argv[]) {
 
    Lander lander = Lander(vVelocity, hVelocity, altitude);
 
-   runSimulation(lander, angle);
+   runSimulation(lander, angle); // Run the simulation
    
    return 0;
 }
@@ -97,21 +122,26 @@ void runSimulation(Lander lander, float angle) {
    int second = 1;
    int interval = 1;
    
+   // Go two rounds of 5 second intervals
    while (interval <= 2) {
+      float rAngle = convertToRadians(angle); // radian angle
       displayFiveSecondMessage();
       for (int count = 1; count < 6; count++) {
-         float dx = calculateHVelocity(lander.getVelocity().getDx(), angle);
-         float dy = calculateVVelocity(lander.getVelocity().getDy(), angle);
+         // Calculate the velocity at the new second
+         float dx = calculateHVelocity(lander.getVelocity().getDx(), rAngle);
+         float dy = calculateVVelocity(lander.getVelocity().getDy(), rAngle);
          lander.setVelocity(dx, dy);
          
-         float x = calculateXPosition(lander);
-         float y = calculateYPosition(lander);
+         // Adjust lander's position
+         float x = calculateXPosition(lander, rAngle);
+         float y = calculateYPosition(lander, rAngle);
          lander.setPoint(x, y);
          
+         // Display Data
          displaySecondData(second, lander, angle);
          second++;
       }
-      if (interval < 2)
+      if (interval < 2) // Only ask if it is the first interval
          angle = getNewAngle();
       interval++;
    }
@@ -126,7 +156,7 @@ void runSimulation(Lander lander, float angle) {
 float getVVelocity() {
    float vVelocity;
    
-   cout << "What is your vertical velocity (m/s)? ";
+   cout << "\nWhat is your vertical velocity (m/s)? ";
    cin >> vVelocity;
    
    return vVelocity;
@@ -201,6 +231,8 @@ float getNewAngle() {
  * Computes the x-axis acceleration and returns it
  ************************************************/
 float computeXAxisAcceleration(float angle) {
+   // Standard lander contains all the data we need
+   // to compute the acceleration
    Lander apollo11;
    float a = apollo11.getTPower() / apollo11.getWeight();
 
@@ -215,6 +247,8 @@ float computeXAxisAcceleration(float angle) {
  * Computes the y-axis acceleration and returns it
  ************************************************/
 float computeYAxisAcceleration(float angle) {
+   // Standard lander contains all the data we need
+   // to compute the acceleration
    Lander apollo11;
    
    // We could adjust this to change if we were working with another planet/ space object
@@ -222,6 +256,7 @@ float computeYAxisAcceleration(float angle) {
    const float moonAcceleration = -1.625;
    float a = apollo11.getTPower() / apollo11.getWeight();
 
+   // Vertical acceration is the only one impacted by gravity
    const float landerAcceleration = calculateVThrust(a, angle);
    return landerAcceleration + moonAcceleration;
 }
@@ -251,9 +286,7 @@ float computeYAxisAcceleration(float angle) {
  * Calculates the vertical velocity at landing.
  *********************************************/
 float calculateVVelocity(float v, float angle) {
-   // 0 is originally to the right rather than up
-   float r = convertToRadians(angle);
-   float a = computeYAxisAcceleration(r);
+   float a = computeYAxisAcceleration(angle);
    return v + a;
 }
 
@@ -265,8 +298,7 @@ float calculateVVelocity(float v, float angle) {
  * Calculates the horizontal velocity at landing.
  ***********************************************/
 float calculateHVelocity(float v, float angle) {
-   float r = convertToRadians(angle);
-   float a = computeXAxisAcceleration(r);
+   float a = computeXAxisAcceleration(angle);
    return v + a;
 }
 
@@ -306,32 +338,40 @@ float calculateHThrust(float thrust, float angle) { return thrust * sin(angle); 
  **********************************/
 float convertToRadians(float degree) { return (2 * M_PI * (degree / 360)); }
 
-/***********************************
+/*****************************************************
  * APOLLO 11 :: CALCULATEXPOSITION
  * INPUTS    :: lander
- * OUTPUTS   :: lander
+ * OUTPUTS   :: NONE
+ * EQUATION  :: fD = iD + (v * t) + (.5 * a * (t * t))
  * Calculates the new position 
  * according to velocity
- **********************************/
-float calculateXPosition(Lander lander) {
-   float xPosition = lander.getPoint().getX();
-   xPosition += lander.getVelocity().getDx();
+ ****************************************************/
+float calculateXPosition(Lander lander, float angle) {
+   float iPosition = lander.getPoint().getX();
+   float velocity = lander.getVelocity().getDx();
    
-   return xPosition;
+   // We don't include seconds due to it being a one second interval
+   float fPosition = iPosition + (velocity) + (.5 * computeXAxisAcceleration(angle));
+   
+   return fPosition;
 }
 
-/***********************************
+/*****************************************************
  * APOLLO 11 :: CALCULATEYPOSITION
  * INPUTS    :: lander
- * OUTPUTS   :: lander
+ * OUTPUTS   :: NONE
+ * EQUATION  :: fD = iD + (v * t) + (.5 * a * (t * t))
  * Calculates the new position 
  * according to velocity
- **********************************/
-float calculateYPosition(Lander lander) {
-   float yPosition = lander.getPoint().getY();
-   yPosition += lander.getVelocity().getDy();
+ ****************************************************/
+float calculateYPosition(Lander lander, float angle) {
+   float iPosition = lander.getPoint().getY();
+   float velocity = lander.getVelocity().getDy();
    
-   return yPosition;
+   // We don't include seconds due to it being a one second interval
+   float fPosition = iPosition + (velocity) + (.5 * computeYAxisAcceleration(angle));
+   
+   return fPosition;
 }
 
 /***********************************************************************
